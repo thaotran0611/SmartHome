@@ -4,78 +4,67 @@ from uart import *
 import time
 import json
 import random
-from create_data import *
+from connect import *
+# from create_data import *
 
-AIO_FEED_IO = ["pihome-light", "pihome-fan"]
-AIO_USERNAME = "tuyetvy_nguyen"
-AIO_KEY = "aio_Bnrt28M3hNVkRFqy4aiyLx69jw1s"
+# get all data from feed
+def get_history(client, feed_id):
+    # Retrieve historical data for a feed
+    data_list = client.data(feed_id)
+    # data_list_recent = client.receive_data(feed_id)
+    # Create a list of fan history from the data
+    
+    data_list_parse = [] # list nay chi lay ra 2 du lieu la created_at va value trong data_list
+    for data in data_list:
+        data_list_parse.append({
+            "created_at": data.created_at,
+            "value": data.value
+        })
+    # Return the fan history list
+    return data_list_parse
+def getTempRandom():
+    value = random.randint(20, 38)
+    print("Temperature: ", value, " .C")
+    clientMQTT.publish("httt.temp", value)
+    
+def getLuxRandom():
+    # lux 0 is night, 100.000 is direct sunlight
+    value = random.randint(0 , 100000)
+    print("Lux: ", value)
+    clientMQTT.publish("httt.lux", value)
+    
+def fanControl(value = random.randint(0, 5)):
+    print("Fan control: ", value)
+    
+    # ghi len adafruit
+    clientMQTT.publish("httt.fan1", value)
+    
+    # control fan in gateway
+    # writeData(value)
+    
+def lightControl(value = random.randint(0, 1)):
+    print("Light control: ", value)
 
-#Vận hành giao thức MQTT, IoT Gateway -> Server Adafruit
-def connected(client) :
-    print("Ket noi thanh cong...")
-    for feed in AIO_FEED_IO:
-        client.subscribe(feed)
-
-def subscribe(client, userdata, mid, granted_qos) :
-    print("Subscribe thanh cong...")
-
-def disconnected (client) :
-    print("Ngat ket noi../")
-    sys.exit(1)
-
-def message(client, feed_io, payload):
-    # print(payload)
-    # print("Nhan du lieu: " + payload + " , feed io:" + feed_io)
-    payload = json.loads(payload)
-    if feed_io == "pihome-light":
-        if payload['command'] == "off":
-            writeData("T")
-        else:
-            writeData("S")
-    if feed_io == "pihome-fan":
-        # if payload == 0:
-        #     writeData("0")
-        # elif payload == 20:
-        #     writeData("1")
-        # elif payload == 40:
-        #     writeData("2")
-        # elif payload == 60:
-        #     writeData("3")
-        # elif payload == 80:
-        #     writeData("4")
-        # elif payload == 100:
-        #     writeData("5")
-        if payload['status'] == 'off':
-            writeData("0")
-        else:
-            if payload['command'] == 0:
-                writeData("0")
-            elif payload['command'] == 1 :
-                writeData("1")
-            elif payload['command'] == 2:
-                writeData("2")
-            elif payload['command'] == 3:
-                writeData("3")
-            elif payload['command'] == 4:
-                writeData("4")
-            elif payload['command'] == 5:
-                writeData("5")
-
-#Taọ đối tượng MQTT Client
-client = MQTTClient(AIO_USERNAME, AIO_KEY)
-client.on_connect = connected
-client.on_disconnect = disconnected
-client.on_message = message
-client.on_subscribe = subscribe
-client.connect()
-client.loop_background()
-
-while True:
-    # value_temp = random.randint(20, 50)
-    # value_humi = random.randint(0, 100)
-    # client.publish("pihome-temperature", value_temp)
-    # client.publish("pihome-humidity", value_humi)
-
-    readSerial(client)
-    time.sleep(10)
-    pass
+    # ghi len adafruit
+    clientMQTT.publish("httt.light1", value)
+    
+    # control fan in gateway
+    # writeData(value)
+    
+    
+if __name__ == '__main__':
+    fanData = get_history(clientHistory, "httt.fan1")
+    tempData = get_history(clientHistory, "httt.temp")
+    for temp in tempData:
+        print(temp)
+    while True:
+        
+            
+        # doc du lieu nhan duoc moi 3 giay tu microbit
+        # readSerial()
+        getTempRandom()
+        getLuxRandom() 
+        fanControl()
+        lightControl()
+        time.sleep(5)
+    
