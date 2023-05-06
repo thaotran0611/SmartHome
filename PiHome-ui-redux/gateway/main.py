@@ -32,6 +32,11 @@ def randomGetLux():
     print("Lux: ", value)
     clientMQTT.publish("httt.lux", value)
     
+    
+# _____________________________________________________________
+# dieu khien thiet bi
+# name: ten cua thiet bi
+# value: gia tri dieu khien, neu la LED thi 0/1, neu la FAN 0-5
 def controlDevice(name, value = -1):
     # neu khong nhan duoc gia tri, thi random
     if "led" in name:
