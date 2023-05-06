@@ -1,5 +1,4 @@
 import sys
-from Adafruit_IO import MQTTClient
 from uart import *
 import time
 import json
@@ -22,49 +21,51 @@ def get_history(client, feed_id):
         })
     # Return the fan history list
     return data_list_parse
-def getTempRandom():
+def randomGetTemp():
     value = random.randint(20, 38)
     print("Temperature: ", value, " .C")
     clientMQTT.publish("httt.temp", value)
     
-def getLuxRandom():
+def randomGetLux():
     # lux 0 is night, 100.000 is direct sunlight
     value = random.randint(0 , 100000)
     print("Lux: ", value)
     clientMQTT.publish("httt.lux", value)
     
-def fanControl(value = random.randint(0, 5)):
-    print("Fan control: ", value)
+def controlDevice(name, value = -1):
+    # neu khong nhan duoc gia tri, thi random
+    if "led" in name:
+        value = value if value != -1 else random.randint(0, 1) 
+    elif "fan" in name:
+        value = value if value != -1 else random.randint(0, 5)
+    # gui den adafruit
+    clientMQTT.publish(name, value)
+    # gui den microbit
+    message(clientMQTT, name, str(value)) 
     
-    # ghi len adafruit
-    clientMQTT.publish("httt.fan1", value)
-    
-    # control fan in gateway
-    # writeData(value)
-    
-def lightControl(value = random.randint(0, 1)):
-    print("Light control: ", value)
 
-    # ghi len adafruit
-    clientMQTT.publish("httt.light1", value)
-    
-    # control fan in gateway
-    # writeData(value)
-    
+def randomControlDevice():
+    nameDeviceFeed = ["httt.br1-led", "httt.ber1-fan" , "httt.ber1-led", "httt.kc-led", "httt.lr-fan", "httt.lr-led"]
+    selected_device = random.choice(nameDeviceFeed)
+    controlDevice(selected_device)
     
 if __name__ == '__main__':
-    fanData = get_history(clientHistory, "httt.fan1")
-    tempData = get_history(clientHistory, "httt.temp")
-    for temp in tempData:
-        print(temp)
+    # fanData = get_history(clientHistory, "httt.fan1")
+    # tempData = get_history(clientHistory, "httt.temp")
+    # for temp in tempData:
+    #     print(temp)
+    # Create the group if it doesn't already exist
+
+    # Create the feed if it doesn't already exist
+    
     while True:
         
             
         # doc du lieu nhan duoc moi 3 giay tu microbit
         # readSerial()
-        getTempRandom()
-        getLuxRandom() 
-        fanControl()
-        lightControl()
+        randomGetTemp()
+        randomGetLux() 
+        randomControlDevice()
+        print("________________________")
         time.sleep(5)
     

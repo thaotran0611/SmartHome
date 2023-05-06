@@ -1,13 +1,14 @@
-from Adafruit_IO import MQTTClient, Client
+from Adafruit_IO import *
 import sys
 from uart import *
 
-AIO_FEED_ID = ["httt.temp", "httt.lux", "httt.fan1", "httt.light1"]
+AIO_FEED_ID = ["httt.temp", "httt.lux", "httt.br1-led", "httt.ber1-fan" , "httt.ber1-led", "httt.kc-led", "httt.lr-fan", "httt.lr-led"]
 AIO_USERNAME = "HungK"
 AIO_KEY = "aio_CiGg66FT8Eh9xdlYv90QvqNqcUeA"
 
 def subscribe(client , userdata , mid , granted_qos):
-    print("Subcribe thanh cong...")
+    # print("Subcribe thanh cong...")
+    pass
 
 def connected(client):
     print("Ket noi thanh cong...")

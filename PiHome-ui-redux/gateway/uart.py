@@ -51,7 +51,7 @@ def readSerial():
 
 
 def message(client , feed_id , payload):
-    print("Nhan du lieu: " + payload)
+    print("Nhan du lieu: " + feed_id, " Gia tri: " + payload)
     if isMicrobitConnected:
         ser.write((str(payload) + "#").encode())
         
