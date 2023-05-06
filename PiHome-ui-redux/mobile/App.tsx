@@ -4,6 +4,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { Provider } from 'react-redux'
 import Main from './src/Main'
 import store from './src/redux/store'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function App() {
     const [visible, setVisible] = React.useState(true)
 

@@ -7,6 +7,8 @@ import TVIcon from '../../../assets/svg/tv_icon.svg'
 import text from '../../styles/text'
 import IconWrapper from '../IconWrapper/IconWrapper'
 import styles from './styles'
+import RiceIcon from '../../../assets/svg/rice_icon.svg'
+import YardIcon from '../../../assets/svg/tree_icon.svg'
 
 type DeviceProps = {
     color: string
@@ -24,6 +26,10 @@ const RoomCard = ({ color, room, device }: DeviceProps): JSX.Element => {
                     <TVIcon width={25} height={25} />
                 ) : room === 'Nhà bếp' ? (
                     <CakeIcon width={25} height={25} />
+                ) : room === 'Phòng ăn' ? (
+                    <RiceIcon width={40} height={40} />
+                ) : room === 'Sân vườn' ? (
+                    <YardIcon width={40} height={40}/>
                 ) : (
                     <ToiletIcon width={25} height={25} />
                 )}

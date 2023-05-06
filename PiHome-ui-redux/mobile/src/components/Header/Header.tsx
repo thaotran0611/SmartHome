@@ -8,16 +8,26 @@ import text from '../../styles/text'
 import IconWrapper from '../IconWrapper/IconWrapper'
 import VoiceButton from '../VoiceButton/index'
 import styles from './styles'
-
-const Header = ({ navigation }: any): JSX.Element => {
+import AsyncStorage from '@react-native-async-storage/async-storage'
+const Header = ({navigation}: any): JSX.Element => {
     const themeColor = useTheme()
     const list = useSelector(notifyListSelector)
-
+    const [data, setData] = React.useState('')
+    AsyncStorage 
+        .getItem('AccessToken')
+        .then((res) => {
+            if (res !== null) {
+                setData(JSON.parse(res))
+            }
+        })
+        .catch((err) => {
+            console.log('err', err)
+        })
     return (
         <View style={styles.container}>
             <View style={styles.header}>
                 <Image
-                    source={require('../../../assets/imgs/avatar.png')}
+                    source={{uri: data['Img1']}}
                     style={styles.image}
                 />
                 <View style={styles.btn}>
@@ -39,8 +49,7 @@ const Header = ({ navigation }: any): JSX.Element => {
                     text.bold,
                     { color: themeColor.colors.text },
                 ]}
-            >
-                Xin chào, ThoaiLe
+            >Xin chào {data['Lname']} {data['Fname']}!
             </Text>
         </View>
     )

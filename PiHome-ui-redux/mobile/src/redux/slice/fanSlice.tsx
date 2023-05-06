@@ -9,7 +9,7 @@ const initValue: Fan = {
 }
 
 const fanSlice = createSlice({
-    name: 'light',
+    name: 'fan',
     initialState: initValue,
     reducers: {
         updateFan: (state, action) => {

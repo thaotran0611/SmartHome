@@ -14,10 +14,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     container__red: {
-        backgroundColor: color.red,
+        backgroundColor: color.grey,
     },
     container__green: {
-        backgroundColor: color.green,
+        backgroundColor: color.lightblue,
     },
     content: {
         display: 'flex',

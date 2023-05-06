@@ -55,7 +55,7 @@ const HomeStackCmp = ({
     )
 }
 
-function TabNavigatorHost() {
+function TabNavigatorMember() {
     return (
         <Tab.Navigator
             tabBar={(props) => <NavBar {...props} />}
@@ -65,10 +65,9 @@ function TabNavigatorHost() {
         >
             <Tab.Screen name='HomeStack' component={HomeStackCmp} />
             <Tab.Screen name='DashBoard' component={DashBoardScreen} />
-            <Tab.Screen name='NewUser' component={SignUpScreen} />
             <Tab.Screen name='Setting' component={SettingScreen} />
         </Tab.Navigator>
     )
 }
 
-export default TabNavigatorHost
+export default TabNavigatorMember

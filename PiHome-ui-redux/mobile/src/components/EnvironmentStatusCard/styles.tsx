@@ -52,6 +52,9 @@ const styles = StyleSheet.create({
     statusCardBackground__blue: {
         backgroundColor: color.blue,
     },
+    marginTop: {
+        marginTop: 10,
+    }
 })
 
 export default styles

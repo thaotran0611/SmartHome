@@ -5,6 +5,7 @@ import CalendarIcon from '../../../assets/svg/calendar_icon.svg'
 import FireIcon from '../../../assets/svg/fire_icon.svg'
 import WaterIcon from '../../../assets/svg/water_icon.svg'
 import { temperatureSelector, humiditySelector } from '../../redux/selector'
+import { LinearGradient } from 'react-native-svg'
 
 import text from '../../styles/text'
 import styles from './styles'
@@ -14,7 +15,7 @@ const EnvironmentStatusCard = (): JSX.Element => {
     const { humidity } = useSelector(humiditySelector)
 
     var dateObj = new Date()
-    var month = dateObj.getUTCMonth() + 1 //months from 1-12
+    var month = dateObj.getUTCMonth() //months from 1-12
     var day = dateObj.getUTCDate()
     var year = dateObj.getUTCFullYear()
     const monthNames = [
@@ -67,6 +68,7 @@ const EnvironmentStatusCard = (): JSX.Element => {
                                 text.regular,
                                 text.size_extraSmall,
                                 text.color_white,
+                                styles.marginTop,
                             ]}
                         >
                             Nhiệt độ
@@ -97,6 +99,7 @@ const EnvironmentStatusCard = (): JSX.Element => {
                                 text.regular,
                                 text.size_extraSmall,
                                 text.color_white,
+                                styles.marginTop,
                             ]}
                         >
                             Độ ẩm

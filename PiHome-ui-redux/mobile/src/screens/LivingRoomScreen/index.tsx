@@ -6,7 +6,8 @@ import Title from '../../components/Title/Title'
 import socket from '../../utils/socket'
 import styles from './styles'
 
-const LivingRoomScreen = (): JSX.Element => {
+const LivingRoomScreen = ({navigation, route}: any): JSX.Element => {
+    console.log(route)
     const [device, setDevice] = React.useState<string>('light')
     const [lightStatus, setLightStatus] = React.useState<boolean>(false)
     const [fanSpeed, setFanSpeed] = React.useState<number>(0)

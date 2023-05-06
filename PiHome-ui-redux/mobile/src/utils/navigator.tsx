@@ -8,11 +8,14 @@ type HomeStackParamList = {
     Bedroom: undefined
     Toilet: undefined
     Login: undefined
+    None: undefined
 }
 
 type AppTabParamList = {
     HomeStack: NavigatorScreenParams<HomeStackParamList>
     Setting: undefined
+    DashBoard: undefined
+    NewUser: undefined
 }
 
 export { AppTabParamList, HomeStackParamList }

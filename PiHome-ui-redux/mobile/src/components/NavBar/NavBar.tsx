@@ -6,6 +6,9 @@ import AppIcon from '../../../assets/svg/app_icon.svg'
 import SettingActiveIcon from '../../../assets/svg/setting_active_icon.svg'
 import SettingIcon from '../../../assets/svg/setting_icon.svg'
 import styles from './styles'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { Ionicons } from '@expo/vector-icons';
+
 
 const Navbar = ({ state, descriptors, navigation }: any): JSX.Element => {
     const themeColor = useTheme()
@@ -64,6 +67,18 @@ const Navbar = ({ state, descriptors, navigation }: any): JSX.Element => {
                                 <AppActiveIcon width={25} height={25} />
                             ) : (
                                 <AppIcon width={25} height={25} />
+                            )
+                        ) : label === 'DashBoard' ? (
+                            isFocused ? (
+                                <MaterialCommunityIcons name="view-dashboard-outline" size={29} color="#77c2f6" />
+                            ) : (
+                                <MaterialCommunityIcons name="view-dashboard-outline" size={29} color="#a6b6bf" />
+                            )
+                        ) : label === 'NewUser' ? (
+                            isFocused ? (
+                                <Ionicons name="person-add-outline" size={29} color="#77c2f6" />
+                            ) : (
+                                <Ionicons name="person-add-outline" size={29} color="#a6b6bf" />
                             )
                         ) : isFocused ? (
                             <SettingActiveIcon width={25} height={25} />
