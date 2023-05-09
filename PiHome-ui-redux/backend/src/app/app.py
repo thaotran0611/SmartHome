@@ -242,6 +242,22 @@ def notif():
         database.commit()
         return jsonify(res)
 
+@app.route('/welcome',methods=['GET'])
+def welcome():
+    database = db.dbcon()
+    mycursor = database.cursor()
+    mycursor.execute(
+                '''SELECT FNAME, LNAME, isAthome FROM USERs 
+            WHERE isAthome =1 AND ROUND(TIMESTAMPDIFF(SECOND,timeline,CURRENT_TIMESTAMP()),1) <10;'''
+            )
+    inHome = mycursor.fetchall()
+    mycursor.execute(
+                '''SELECT FNAME, LNAME, isAthome FROM USERs 
+            WHERE isAthome =0 AND ROUND(TIMESTAMPDIFF(SECOND,timeline,CURRENT_TIMESTAMP()),1) <10;'''
+            )
+    outHome = mycursor.fetchall()
+    res =[inHome, outHome]
+    return jsonify(res)
 app.run()
 
 if __name__ == "__main__":

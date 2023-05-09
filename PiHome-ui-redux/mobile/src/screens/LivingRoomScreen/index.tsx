@@ -12,6 +12,8 @@ const LivingRoomScreen = ({navigation, route}: any): JSX.Element => {
     const [lightStatus, setLightStatus] = React.useState<boolean>(false)
     const [fanSpeed, setFanSpeed] = React.useState<number>(0)
     const [fanStatus, setFanStatus] = React.useState<boolean>(false)
+    const [light1,setLight1] = React.useState(false)
+    const [fan1,setFan1] = React.useState(false)
     React.useEffect(() => {
         fetch(BASE_URL+'device', {
             method: 'POST',
@@ -40,69 +42,79 @@ const LivingRoomScreen = ({navigation, route}: any): JSX.Element => {
         })
     }, [])
     const handleClickLightPower = (status: boolean) => {
-        console.log("auto call")
+        if(light1){
+            console.log("auto call")
+            let temp = 0
+            if (status) {temp = 1}
+            const data = {
+                from: 'client',
+                to: 'lightController',
+                data: {
+                    RoomID: route.params.RoomID,
+                    type: 'LED',
+                    command: temp,
+                },
+            }
+            fetch(BASE_URL+'control', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data['data'])
+            })
+            .then((resp) => {
+                return resp.json();
+            })
+            .then((jsonData) => {
+                console.log(jsonData)
 
-        let temp = 0
-        if (status) {temp = 1}
-        const data = {
-            from: 'client',
-            to: 'lightController',
-            data: {
-                RoomID: route.params.RoomID,
-                type: 'LED',
-                command: temp,
-            },
+            })  
+            .catch((error) => {
+                console.log(error);
+            })
         }
-        fetch(BASE_URL+'control', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data['data'])
-        })
-        .then((resp) => {
-            return resp.json();
-        })
-        .then((jsonData) => {
-            console.log(jsonData)
-
-        })  
-        .catch((error) => {
-            console.log(error);
-        })
+        else {
+            setLight1(true)
+        }
     }
 
     const handleClickFanPower = (speed: number) => {
-        let temp = 0
-        if (!fanStatus) {temp = 0}
-        else {temp = speed}
-        const data = {
-            from: 'client',
-            to: 'fanController',
-            data: {
-                RoomID: route.params.RoomID,
-                type: 'FAN',
-                status: fanStatus,
-                command: temp,
-            },
-        }
-        fetch(BASE_URL+'control', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data['data'])
-        })
-        .then((resp) => {
-            return resp.json();
-        })
-        .then((jsonData) => {
-            console.log(jsonData)
+        if(fan1)
+        {
+            let temp = 0
+            if (!fanStatus) {temp = 0}
+            else {temp = speed}
+            const data = {
+                from: 'client',
+                to: 'fanController',
+                data: {
+                    RoomID: route.params.RoomID,
+                    type: 'FAN',
+                    status: fanStatus,
+                    command: temp,
+                },
+            }
+            fetch(BASE_URL+'control', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data['data'])
+            })
+            .then((resp) => {
+                return resp.json();
+            })
+            .then((jsonData) => {
+                console.log(jsonData)
 
-        })  
-        .catch((error) => {
-            console.log(error);
-        })
+            })  
+            .catch((error) => {
+                console.log(error);
+            })
+        }
+        else {
+            setFan1(true)
+        }
     }
 
     

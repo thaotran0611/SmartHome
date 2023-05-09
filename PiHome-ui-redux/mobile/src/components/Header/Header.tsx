@@ -10,6 +10,8 @@ import VoiceButton from '../VoiceButton/index'
 import styles from './styles'
 import { BASE_URL } from '../../link_api/meta'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import * as Speach from 'expo-speech'
+
 const Header = ({navigation}: any): JSX.Element => {
     const themeColor = useTheme()
     const list = useSelector(notifyListSelector)
@@ -46,6 +48,7 @@ const Header = ({navigation}: any): JSX.Element => {
         .then((res) => {
             if (res !== null) {
                 setData(JSON.parse(res))
+                Speach.speak("Welcome " + JSON.parse(res)['Fname'] + " to smart home")
             }
         })
         .catch((err) => {

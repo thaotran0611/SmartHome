@@ -30,5 +30,5 @@ def authentication(status, name):
             ,(img,status))
         database.commit()
     
-path = 'D:/HK222/DA_HTTT/SmartHomeApp/SmartHome/PiHome-ui-redux/mobile/Passengers/passenger1.jfif'
+path = 'D:/HK222/DA_HTTT/SmartHomeApp/SmartHome/PiHome-ui-redux/mobile/Passengers/ad2.jpg'
 authentication(True,path)

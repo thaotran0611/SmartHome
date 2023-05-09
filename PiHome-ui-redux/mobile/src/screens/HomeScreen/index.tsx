@@ -7,6 +7,7 @@ import DeviceCard from '../../components/RoomCard/RoomCard'
 import styles from './styles'
 import MemberInHome from '../../components/MemberInHome/MemberInHome'
 import { BASE_URL } from '../../link_api/meta'
+import * as Speach from 'expo-speech'
 const dataG = [
     {
         id: 'KC',
@@ -72,8 +73,34 @@ const HomeScreen = ( {navigation, route}: any): JSX.Element => {
         .catch((error) => {
             console.log(error);
         })
+
     },[])
 
+    React.useEffect(()=>{
+        const interval = setInterval(()=>{
+            fetch(BASE_URL+'welcome', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            })
+            .then((resp) => {
+                return resp.json();
+            })
+            .then((jsonData) => {
+                for (let index = 0; index < jsonData[0].length; index++) {
+                    Speach.speak(jsonData[0][index].FNAME + " has already come home")
+                }
+                for (let index = 0; index < jsonData[1].length; index++) {
+                    Speach.speak(jsonData[1][index].FNAME + " has already gone outside")
+                }
+            })  
+            .catch((error) => {
+                console.log(error);
+            })
+        }, 10000)   
+
+    },[])
     
     const [changeFloor, setChangefloor] = React.useState<boolean>(true);
     return (

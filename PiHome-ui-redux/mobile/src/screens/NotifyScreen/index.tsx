@@ -9,12 +9,12 @@ import text from '../../styles/text'
 import styles from './styles'
 import { BASE_URL } from '../../link_api/meta'
 import color from '../../styles/color'
+import Tts from 'react-native-tts'
 
 const NotifyScreen = ({navigation, route}: any): JSX.Element => {
-    const list = useSelector(notifyListSelector)
     const passengers = route.params['passengers']
     console.log(passengers)
-
+    
     const images = [
         require('../../../Passengers/passenger2.jpg')
     ]
@@ -22,12 +22,14 @@ const NotifyScreen = ({navigation, route}: any): JSX.Element => {
     return (
         <View style={styles.container}>
             <Title name='Thông báo' />
+            <Text style={[text.size_large, text.medium, {color: color.focusPrimary}]}>Thông Báo</Text>
             <ScrollView contentContainerStyle={styles.notify}>
                 {passengers.length > 0 &&
-                    passengers.map((element: any, i: number) => (
-                        <View>
+                    passengers.map((element: any, i: number) => {
+                        return (
+                        <View style={[{marginBottom:10}]}>
                             <Image 
-                                source={images[i]}
+                                source={images[0]}
                                 style = {styles.img}
                             />
                             <Text style={[text.medium, text.size_medium, {color: color.yellow}]}>{element.status == 1? 'Guest want to go in' : 'Guest want to go out'}</Text>
@@ -39,7 +41,7 @@ const NotifyScreen = ({navigation, route}: any): JSX.Element => {
                                 id={i}
                             /> */}
                         </View>
-                    ))}
+                    )})}
                 {passengers.length == 0 && (
                     <Text style={[text.medium, text.color_back, styles.text]}>
                         Không có thông báo mới

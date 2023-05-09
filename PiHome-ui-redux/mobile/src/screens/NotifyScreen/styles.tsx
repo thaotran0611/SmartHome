@@ -9,6 +9,7 @@ const styles = StyleSheet.create({
         width: maxWidth,
         height: maxHeight,
         position: 'relative',
+        alignItems: 'center',
     },
     notify: {
         width: maxWidth,

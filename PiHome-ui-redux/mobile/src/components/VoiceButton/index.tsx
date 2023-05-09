@@ -1,13 +1,21 @@
 import * as React from 'react'
 import { Pressable, Text, View } from 'react-native'
 import styles from './styles'
+import * as Speech from 'expo-speech'
 
 const VoiceButton = (props: { extend?: boolean | undefined }): JSX.Element => {
     const [pressed, setPressed] = React.useState<boolean>(false)
-
+    const checkspeaker = async() => {
+        setPressed(!pressed)
+        if(!pressed) {
+            for (let index = 0; index < 5; index++) {
+                Speech.speak("The speaker is checking    ")
+            }  
+        }
+    }
     return (
         <Pressable
-            onPress={() => setPressed(!pressed)}
+            onPress={() => {checkspeaker()}}
             style={[
                 styles.container,
                 props.extend ? styles.extend : null,

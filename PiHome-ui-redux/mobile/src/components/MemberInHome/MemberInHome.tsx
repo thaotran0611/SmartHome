@@ -24,9 +24,8 @@ const MemberInHome = (): JSX.Element => {
             .catch((error) => {
                 console.log(error);
             })
-        }, 10000)
+        }, 20000)
     }, [])
-    console.log(members)
     const images = [
         require('../../../Photo/ad2.jpg'),
         require('../../../Photo/img5.jpg'),
