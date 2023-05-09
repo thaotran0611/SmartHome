@@ -12,7 +12,7 @@ const PChart = (props: { data: any, color: any, labelcolor: any }) => {
     width={Dimensions.get('screen').width - 10}
     height={220}
     backgroundColor={"transparent"}
-    accessor={"population"}
+    accessor={"Value"}
     paddingLeft={"15"}
     // center={[10, 50]}
     absolute

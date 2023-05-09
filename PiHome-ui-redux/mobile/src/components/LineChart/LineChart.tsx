@@ -6,15 +6,25 @@ import LineChart from "D:/HK222/DA_HTTT/SmartHomeApp/SmartHome/PiHome-ui-redux/m
 import { Dimensions } from 'react-native';
 import styles from './styles';
 
-const Chart = (props: { data: any, color: any, labelcolor: any }) => {
+const Chart = (props: { data: any, color: any, labelcolor: any, unit: any }) => {
+    if (props.data.labels.length == 0) {
+        props.data = {
+            labels: ["0h"],
+            datasets: [
+                {
+                    data: [0]
+                }
+            ]
+        }
+    }
     return (
         <View>
             <LineChart
                 data={props.data}
                 width={Dimensions.get('screen').width - 10} // from react-native
                 height={180}
-                yAxisLabel="$"
-                yAxisSuffix="k"
+                yAxisLabel=""
+                yAxisSuffix={props.unit}
                 yAxisInterval={1} // optional, defaults to 1
                 chartConfig={{
                 backgroundGradientFromOpacity: 0,
@@ -22,7 +32,7 @@ const Chart = (props: { data: any, color: any, labelcolor: any }) => {
                 // backgroundColor: "#fff",
                 backgroundGradientFrom: "#fff",
                 backgroundGradientTo: "#fff",
-                decimalPlaces: 2, // optional, defaults to 2dp
+                decimalPlaces: 0, // optional, defaults to 2dp
                 color: () => props.color,
                 // color: (opacity = 1) => `rgba(241, 56, 56, ${opacity})`,
                 labelColor: () => props.labelcolor,

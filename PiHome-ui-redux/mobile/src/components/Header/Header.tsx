@@ -8,12 +8,40 @@ import text from '../../styles/text'
 import IconWrapper from '../IconWrapper/IconWrapper'
 import VoiceButton from '../VoiceButton/index'
 import styles from './styles'
+import { BASE_URL } from '../../link_api/meta'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 const Header = ({navigation}: any): JSX.Element => {
     const themeColor = useTheme()
     const list = useSelector(notifyListSelector)
     const [data, setData] = React.useState('')
-    AsyncStorage 
+    const images = [
+        require('../../../Photo/ad2.jpg'),
+        require('../../../Photo/img5.jpg'),
+        require('../../../Photo/img68.jpg')
+    ]
+    const [noti, setNoti] = React.useState([])
+    React.useEffect(()=>{
+        const interval = setInterval(()=>{
+            fetch(BASE_URL+'noti', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            })
+            .then((resp) => {
+                return resp.json();
+            })
+            .then((jsonData) => {
+                setNoti(jsonData)
+            })  
+            .catch((error) => {
+                console.log(error);
+            })
+        }, 10000)
+    },[])
+
+    React.useEffect(()=>{
+        AsyncStorage 
         .getItem('AccessToken')
         .then((res) => {
             if (res !== null) {
@@ -23,21 +51,24 @@ const Header = ({navigation}: any): JSX.Element => {
         .catch((err) => {
             console.log('err', err)
         })
+    },[])
+    
+    // console.log(data)
     return (
         <View style={styles.container}>
             <View style={styles.header}>
                 <Image
-                    source={{uri: data['Img1']}}
+                    source={images[data['UserID']-1]}
                     style={styles.image}
                 />
                 <View style={styles.btn}>
                     <VoiceButton />
                     <Pressable
                         onPress={() => {
-                            navigation.navigate('Notification')
+                            navigation.navigate('Notification', {'passengers': noti})
                         }}
                     >
-                        <IconWrapper color='white' isBell={list.length !== 0}>
+                        <IconWrapper color='white' isBell={noti.length !== 0}>
                             <BellIcon width={25} height={20} />
                         </IconWrapper>
                     </Pressable>

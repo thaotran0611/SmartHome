@@ -21,7 +21,7 @@ const LoginScreen = ({ navigation }: any): JSX.Element => {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({email: email, password: password})
+            body: JSON.stringify({email: 'anhduc123@gmail.com', password: '123'})
         })
         .then((resp) => {
             return resp.json();

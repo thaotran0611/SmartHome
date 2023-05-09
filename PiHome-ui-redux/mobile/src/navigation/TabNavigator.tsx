@@ -14,6 +14,7 @@ import { AppTabParamList, HomeStackParamList } from '../utils/navigator'
 import LoginScreen from '../screens/LoginScreen'
 import DashBoardScreen from '../screens/DashBoardScreen'
 import SignUpScreen from '../screens/SignUpScreen'
+import Blog from '../screens/BlogDevice'
 const Tab = createBottomTabNavigator<AppTabParamList>()
 const HomeStack = createNativeStackNavigator<HomeStackParamList>()
 
@@ -47,6 +48,13 @@ const HomeStackCmp = ({
             <HomeStack.Screen
                 name='Login'
                 component={LoginScreen}
+                options={{
+                    headerShown: false,
+                }}
+            />
+            <HomeStack.Screen
+                name='Blog'
+                component={Blog}
                 options={{
                     headerShown: false,
                 }}

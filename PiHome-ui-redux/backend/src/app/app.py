@@ -7,6 +7,7 @@ from flask_marshmallow import Marshmallow
 import database as db
 from datetime import datetime
 import re
+from gateway import *
 ma = Marshmallow
 
 app = Flask(__name__)
@@ -111,7 +112,20 @@ def getUsers():
     database = db.dbcon()
     mycursor = database.cursor()
     try:
-        mycursor.execute(""" SELECT LName, isAthome, timeline, Img1 FROM users;""")
+        mycursor.execute("""SELECT UserID, LName, isAthome, timeline, Img1 FROM users;""")
+        result = mycursor.fetchall()
+    except:
+        result = "failed"
+    database.close()
+    return jsonify(result)
+
+@app.route('/img', methods = ['POST'])
+def getImg():
+    UserID = request.json["UserID"]
+    database = db.dbcon()
+    mycursor = database.cursor()
+    try:
+        mycursor.execute("""SELECT Img1 FROM users WHERE UserID = % s;""", (UserID))
         result = mycursor.fetchall()
     except:
         result = "failed"
@@ -123,19 +137,112 @@ def roundChart():
     database=db.dbcon()
     mycursor = database.cursor()
     try:
-        mycursor.execute(""" select RoomName , round(sum(performance*working_hours),1) as Value
+        mycursor.execute(""" select RoomName as name , round(sum(performance*working_hours),1) as Value
                             from contain natural join devices natural join rooms
                             group by RoomName;
                         """)
         result = mycursor.fetchall()
     except:
         result = "failed"
-    
     database.close()
     return json.dumps(result)
+
+@app.route('/device', methods=['POST'])
+def getInfoDevice():
+    room = request.json["RoomID"]
+    print('httt.'+room.casefold() + '_fan')
+    fan_status = get_status(clientHistory,'httt.'+room.casefold() + '-fan')
+    led_status = get_status(clientHistory,'httt.'+room.casefold() + '-led')
+    result = [int(fan_status),bool(int(led_status))]
+    print(result)
+    return json.dumps(result)
+
+@app.route('/blog', methods=['POST'])
+def blog():
+    room = request.json["RoomID"]
+    fan_history=get_history(clientHistory,'httt.'+room.casefold() + '-fan')
+    led_history=get_history(clientHistory,'httt.'+room.casefold() + '-led')
+    result = [fan_history,led_history]
+    print(result)
+    return jsonify(result)
+
+@app.route('/control',methods=['POST'])
+def control():
+    room = request.json["RoomID"]
+    database = db.dbcon()
+    mycursor = database.cursor()
+    type = request.json['type']
+    value = request.json['command']
+    feed_name ='httt.' + room.casefold() + '-' + type.casefold()
+    controlDevice(feed_name,value)
+    mycursor.execute(
+            """SELECT isActive FROM smarthome.contain natural join devices 
+            WHERE Type=%s AND RoomID=%s;""",(type,room))
+    status = mycursor.fetchall()
+    status = status[0]['isActive']
+    if value == 0: 
+        if status !=0 :
+            mycursor.execute(
+                '''UPDATE contain, devices SET contain.isActive = 0 
+                , contain.working_hours=contain.working_hours+ROUND(TIMESTAMPDIFF(MINUTE,contain.start_active,CURRENT_TIMESTAMP())/60,1)
+                , contain.start_active=CURRENT_TIMESTAMP()
+                WHERE contain.DCODE=devices.DCODE AND Type=%s AND RoomID=%s;''',(type,room))
+            database.commit()
+    else: 
+        if status == 0 :
+            mycursor.execute('''UPDATE contain, devices SET contain.isActive = 1 , contain.start_active=CURRENT_TIMESTAMP()
+                WHERE contain.DCODE=devices.DCODE AND Type=%s AND RoomID=%s;''',(type,room))
+            database.commit()
+    mess = "success"
+    return jsonify(mess)
+
+@app.route('/sensor', methods = ['POST'])
+def sensor():
+    sensor = request.json["sensor"]
+    step = request.json["step"]
+    sensor_history = get_history_sensor(sensor, step)
+    print(sensor_history)
+    return jsonify(sensor_history)
+
+@app.route('/sensornow', methods = ['GET'])
+def sensornow():
+    temp = get_status(clientHistory, 'httt.temp')
+    lux = get_status(clientHistory, 'httt.lux')
+    result = [temp, lux]
+    print(result)
+    return jsonify(result)
+
+@app.route('/door', methods = ['GET'])
+def door():
+    door = get_status(clientHistory, 'httt.door')
+    return jsonify(int(door))
+
+@app.route('/doorChange', methods = ['POST'])
+def doorChange():
+    status = request.json['status']
+    controlDevice('httt.door', 1 if status else 0)
+    return jsonify("success")
+
+@app.route('/noti', methods=['GET'])
+def notif():
+    database = db.dbcon()
+    mycursor = database.cursor()
+    mycursor.execute(
+                '''SELECT * FROM GUEST WHERE 
+            ROUND(TIMESTAMPDIFF(MINUTE,TIM,CURRENT_TIMESTAMP()),1) <40;'''
+            )
+    res = mycursor.fetchall()
+    if res == []:
+        return jsonify(res)
+    else: 
+        # mycursor.execute(
+        #         '''UPDATE GUEST SET notification = 1 WHERE notification=0 AND status =1 AND
+        #     ROUND(TIMESTAMPDIFF(MINUTE,TIM,CURRENT_TIMESTAMP()),1) <5;'''
+        #     )
+        database.commit()
+        return jsonify(res)
+
 app.run()
-
-
 
 if __name__ == "__main__":
     app.run(debug=True)

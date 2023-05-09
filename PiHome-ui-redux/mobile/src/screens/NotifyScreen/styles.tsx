@@ -22,6 +22,12 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: color.darkBackground,
     },
+    img: {
+        width: 400,
+        height: 400,
+        marginTop: 10,
+        borderRadius: 20,
+    }
 })
 
 export default styles

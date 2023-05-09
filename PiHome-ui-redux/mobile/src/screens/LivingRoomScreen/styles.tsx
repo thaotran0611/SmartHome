@@ -27,6 +27,23 @@ const styles = StyleSheet.create({
         marginTop: 20,
         textAlign: 'center',
     },
+    floorBtn: {
+        paddingVertical: 10,
+        paddingHorizontal: 15,
+        marginLeft: 5,
+        marginRight: 5,
+        borderRadius: 10,
+        alignItems: 'center',
+        backgroundColor: color.primary,
+        width: (maxWidth - 70) / 2,
+    },
+    title: {
+        fontWeight: 'bold',
+        fontSize: 20,
+        lineHeight: 18,
+        color: color.lightText,
+        padding: 5,
+    },
 })
 
 export default styles

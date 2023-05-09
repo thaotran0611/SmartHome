@@ -4,11 +4,30 @@ import DoorIcon from '../../../assets/svg/door_icon.svg'
 import useNotifications from '../../hook/useNotification'
 import color from '../../styles/color'
 import text from '../../styles/text'
+import { BASE_URL } from '../../link_api/meta'
 
 import styles from './styles'
 
 const DoorCard = (): JSX.Element => {
     const [status, setStatus] = React.useState<boolean>(false)
+    React.useEffect(()=>{
+        fetch(BASE_URL+'door', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        })
+        .then((resp) => {
+            return resp.json();
+        })
+        .then((jsonData) => {
+            console.log(Boolean(jsonData))
+            setStatus(Boolean(jsonData))
+        })  
+        .catch((error) => {
+            console.log(error);
+        })
+    },[])
     // const { schedulePushNotification } = useNotifications()
 
     return (
@@ -31,7 +50,24 @@ const DoorCard = (): JSX.Element => {
                 thumbColor={'white'}
                 value={status}
                 onValueChange={async () => {
-                    setStatus(!status)
+                    let temp = !status
+                    setStatus(temp)
+                    fetch(BASE_URL+'doorChange', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({status: temp})
+                    })
+                    .then((resp) => {
+                        return resp.json();
+                    })
+                    .then((jsonData) => {
+                        console.log(jsonData)
+                    })  
+                    .catch((error) => {
+                        console.log(error);
+                    })
                     // await schedulePushNotification(
                     //     'Successful',
                     //     status

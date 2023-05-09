@@ -23,7 +23,11 @@ const Fan = (props: FanProps): JSX.Element => {
         <View>
             <Pressable
                 onPress={() => {
-                    props.setStatus(!props.status)
+                    let temp = props.status
+                    props.setStatus(!temp)
+                    if(!temp){
+                        props.setSpeed(0)
+                    }
                 }}
             >
                 <View
@@ -59,7 +63,7 @@ const Fan = (props: FanProps): JSX.Element => {
                     Tốc độ quạt
                 </Text>
             </View>
-            <ProgressBar speed={props.speed} setSpeed={props.setSpeed} />
+            <ProgressBar speed={props.speed} setSpeed={props.setSpeed} setStatus={props.setStatus} />
         </View>
     )
 }

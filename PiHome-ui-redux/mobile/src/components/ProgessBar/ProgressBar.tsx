@@ -6,6 +6,7 @@ import styles from './styles'
 const ProgressBar = (props: {
     speed: number
     setSpeed: (n: number) => void
+    setStatus: (n: boolean) => void
 }): JSX.Element => {
     const value = [1, 2, 3, 4, 5]
 
@@ -14,7 +15,7 @@ const ProgressBar = (props: {
             {value.map((element: number) => (
                 <Pressable
                     key={element}
-                    onPress={() => props.setSpeed(element)}
+                    onPress={() => {props.setSpeed(element), props.setStatus(true)}}
                     style={[
                         element == 1
                             ? styles.powerHead

@@ -10,7 +10,7 @@ import { LinearGradient } from 'react-native-svg'
 import text from '../../styles/text'
 import styles from './styles'
 
-const EnvironmentStatusCard = (): JSX.Element => {
+const EnvironmentStatusCard = (props: { temp: any, lux: any}): JSX.Element => {
     const { temperature } = useSelector(temperatureSelector)
     const { humidity } = useSelector(humiditySelector)
 
@@ -61,7 +61,7 @@ const EnvironmentStatusCard = (): JSX.Element => {
                                 text.color_white,
                             ]}
                         >
-                            {temperature ? temperature : ''} &deg;C
+                            {props.temp} &deg;C
                         </Text>
                         <Text
                             style={[
@@ -92,7 +92,7 @@ const EnvironmentStatusCard = (): JSX.Element => {
                                 text.color_white,
                             ]}
                         >
-                            {humidity ? humidity : ''} %
+                            {props.lux} lx
                         </Text>
                         <Text
                             style={[
@@ -102,7 +102,7 @@ const EnvironmentStatusCard = (): JSX.Element => {
                                 styles.marginTop,
                             ]}
                         >
-                            Độ ẩm
+                            Ánh sáng
                         </Text>
                     </View>
                 </View>
