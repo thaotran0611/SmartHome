@@ -29,7 +29,9 @@ const MemberInHome = (): JSX.Element => {
     const images = [
         require('../../../Photo/ad2.jpg'),
         require('../../../Photo/img5.jpg'),
-        require('../../../Photo/img68.jpg')
+        require('../../../Photo/img68.jpg'),
+        require('../../../Photo/thao1.jpg'),
+        require('../../../Photo/hung1.jpg'),
     ]
     
     return (

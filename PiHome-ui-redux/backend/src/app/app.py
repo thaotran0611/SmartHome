@@ -154,7 +154,6 @@ def getInfoDevice():
     fan_status = get_status(clientHistory,'httt.'+room.casefold() + '-fan')
     led_status = get_status(clientHistory,'httt.'+room.casefold() + '-led')
     result = [int(fan_status),bool(int(led_status))]
-    print(result)
     return json.dumps(result)
 
 @app.route('/blog', methods=['POST'])
@@ -196,12 +195,12 @@ def control():
     mess = "success"
     return jsonify(mess)
 
-@app.route('/sensor', methods = ['POST'])
+@app.route('/sensor', methods = ['GET'])
 def sensor():
-    sensor = request.json["sensor"]
-    step = request.json["step"]
-    sensor_history = get_history_sensor(sensor, step)
-    print(sensor_history)
+    temp_history = get_history_sensor("temp", 1)
+    lux_history = get_history_sensor("lux", 1)
+    sensor_history = [temp_history,lux_history]
+    print("------>", sensor_history)
     return jsonify(sensor_history)
 
 @app.route('/sensornow', methods = ['GET'])

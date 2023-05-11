@@ -1,6 +1,6 @@
 import { useTheme } from '@react-navigation/native'
 import * as React from 'react'
-import { Image, Pressable, Text, View } from 'react-native'
+import { Image, Pressable, Text, View, TextInput } from 'react-native'
 import Button from '../../components/Button/Button'
 import Input from '../../components/Input/Input'
 import color from '../../styles/color'
@@ -21,14 +21,14 @@ const LoginScreen = ({ navigation }: any): JSX.Element => {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({email: 'anhduc123@gmail.com', password: '123'})
+            body: JSON.stringify({email: email, password: password})
         })
         .then((resp) => {
             return resp.json();
         })
         .then((jsonData) => {
             if(jsonData['result'] == true){
-                alert("You are: "+jsonData['Fname']);
+                // alert("You are: "+jsonData['Fname']);
                 AsyncStorage.setItem('AccessToken', JSON.stringify(jsonData))
                 console.log(jsonData['UserID'])
                 if(jsonData['UserID'] === 1) {navigation.navigate("HomeHost")}
@@ -38,7 +38,7 @@ const LoginScreen = ({ navigation }: any): JSX.Element => {
                 }
             }
             else{
-                alert("Wrong username or password. Try again");
+                alert("Wrong email or password. Try again");
             }
             })
             .catch((error) => {
@@ -70,6 +70,7 @@ const LoginScreen = ({ navigation }: any): JSX.Element => {
                 />
                 <Input
                     value={password}
+                    // secureTextEntry={true}
                     onChange={setPassword}
                     placeholder={'Password'}
                 />

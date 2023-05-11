@@ -56,23 +56,30 @@ const HomeScreen = ( {navigation, route}: any): JSX.Element => {
     const [lux, setLux] = React.useState()
     const [temp, setTemp] = React.useState()
     React.useEffect(()=>{
-        fetch(BASE_URL+'sensornow', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-        })
-        .then((resp) => {
-            return resp.json();
-        })
-        .then((jsonData) => {
-            console.log(jsonData)
-            setLux(jsonData[1])
-            setTemp(jsonData[0])
-        })  
-        .catch((error) => {
-            console.log(error);
-        })
+        const interval = setInterval(()=>{
+
+            fetch(BASE_URL+'sensornow', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            })
+            .then((resp) => {
+                return resp.json();
+            })
+            .then((jsonData) => {
+                console.log(jsonData)
+                setLux(jsonData[1])
+                setTemp(jsonData[0])
+                if (jsonData[0]>40) {
+                    Speach.speak("The temperature is quite high, please check your safety")
+                }
+            })  
+            .catch((error) => {
+                console.log(error);
+            })
+        }, 10000)   
+
 
     },[])
 

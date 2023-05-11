@@ -10,13 +10,16 @@ import styles from './styles'
 import { BASE_URL } from '../../link_api/meta'
 import color from '../../styles/color'
 import Tts from 'react-native-tts'
+import DoorCard from '../../components/DoorCard/DoorCard'
 
 const NotifyScreen = ({navigation, route}: any): JSX.Element => {
     const passengers = route.params['passengers']
     console.log(passengers)
     
     const images = [
-        require('../../../Passengers/passenger2.jpg')
+        require('../../../Passengers/passenger1.jpg'),
+        require('../../../Passengers/passenger2.jpg'),
+        require('../../../Passengers/passenger3.jpg'),
     ]
 
     return (
@@ -29,7 +32,7 @@ const NotifyScreen = ({navigation, route}: any): JSX.Element => {
                         return (
                         <View style={[{marginBottom:10}]}>
                             <Image 
-                                source={images[0]}
+                                source={images[i]}
                                 style = {styles.img}
                             />
                             <Text style={[text.medium, text.size_medium, {color: color.yellow}]}>{element.status == 1? 'Guest want to go in' : 'Guest want to go out'}</Text>
@@ -48,6 +51,11 @@ const NotifyScreen = ({navigation, route}: any): JSX.Element => {
                     </Text>
                 )}
             </ScrollView>
+            {/* {passengers.length > 0 && (
+                <View style={styles.door}>
+                    <DoorCard />
+                </View>
+            )} */}
         </View>
     )
 }

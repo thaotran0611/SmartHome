@@ -28,6 +28,13 @@ const styles = StyleSheet.create({
         height: 400,
         marginTop: 10,
         borderRadius: 20,
+    },
+    door: {
+        width: maxWidth,
+        height: maxHeight,
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: maxHeight * 0.03,
     }
 })
 

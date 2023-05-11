@@ -1,22 +1,24 @@
 import React, { useState } from 'react'
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image, Alert } from 'react-native'
 import { BASE_URL } from '../../link_api/meta'
+import { ScrollView } from 'react-native-gesture-handler'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import DatePicker from 'react-native-date-picker'
+import text from '../../styles/text'
 const SignUpScreen = ({navigation}:any) => {
 
     const [fistName, setfistName] = useState('')
     const [lastName, setlastName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [birthday, setBirthday] = useState('2002-02-01')
+    const [birthday, setBirthday] = useState('')
     const [gender, setGender] = useState('MALE')
     const [img1, setImg1] = useState('a')
     const [img2, setImg2] = useState('a')
     const [img3, setImg3] = useState('a')
     const [img4, setImg4] = useState('a')
     const [img5, setImg5] = useState('a')
-    const [date, setDate] = useState(new Date());
+    // const [date, setDate] = useState(new Date());
 
     const options = [
         { value: "female", label: "Female" },
@@ -24,7 +26,7 @@ const SignUpScreen = ({navigation}:any) => {
         { value: "other", label: "Other" }
       ];
 
-    const [selectedDate, setSelectedDate] = useState(new Date());
+    // const [selectedDate, setSelectedDate] = useState(new Date());
       
   const signUp = () => {
     fetch(BASE_URL+'signup', {
@@ -53,7 +55,9 @@ const SignUpScreen = ({navigation}:any) => {
   }
 
   return (
+    <ScrollView>
     <View style={styles.container}>
+      <Text style={[text.size_large, text.medium, {marginBottom: 15}]}>Sign up form</Text>
       <View style={styles.inputContainer}>
         <Image
           style={styles.inputIcon}
@@ -87,6 +91,13 @@ const SignUpScreen = ({navigation}:any) => {
             style={styles.inputIcon}
             source={{ uri: 'https://img.icons8.com/?size=2x&id=3522&format=png' }}
           />
+          <TextInput
+          style={styles.inputs}
+          placeholder="Birthday (vd: 2002-02-01)"
+          // keyboardType="date"
+          underlineColorAndroid="transparent"
+          onChangeText={setBirthday}
+        />
     </View>
 
     <View style={styles.inputContainer}>
@@ -94,7 +105,13 @@ const SignUpScreen = ({navigation}:any) => {
           style={styles.inputIcon}
           source={{ uri: 'https://img.icons8.com/?size=512&id=6564&format=png' }}
         />
-        
+        <TextInput
+          style={styles.inputs}
+          placeholder="Male/Female"
+          // keyboardType="date"
+          underlineColorAndroid="transparent"
+          onChangeText={setGender}
+        />
     </View>
 
 
@@ -126,12 +143,74 @@ const SignUpScreen = ({navigation}:any) => {
           onChangeText={setPassword}
         />
     </View>
+    <View style={styles.inputContainer}>
+        <Image
+          style={styles.inputIcon}
+          source={{ uri: 'https://img.icons8.com/?size=512&id=1393&format=png' }}
+        />
+        <TextInput
+          style={styles.inputs}
+          placeholder="Img1"
+          underlineColorAndroid="transparent"
+          onChangeText={setImg1}
+        />
+    </View>
+    <View style={styles.inputContainer}>
+        <Image
+          style={styles.inputIcon}
+          source={{ uri: 'https://img.icons8.com/?size=512&id=1393&format=png' }}
+        />
+        <TextInput
+          style={styles.inputs}
+          placeholder="Img2"
+          underlineColorAndroid="transparent"
+          onChangeText={setImg2}
+        />
+    </View>
+    <View style={styles.inputContainer}>
+        <Image
+          style={styles.inputIcon}
+          source={{ uri: 'https://img.icons8.com/?size=512&id=1393&format=png' }}
+        />
+        <TextInput
+          style={styles.inputs}
+          placeholder="Img3"
+          underlineColorAndroid="transparent"
+          onChangeText={setImg3}
+        />
+    </View>
+    <View style={styles.inputContainer}>
+        <Image
+          style={styles.inputIcon}
+          source={{ uri: 'https://img.icons8.com/?size=512&id=1393&format=png' }}
+        />
+        <TextInput
+          style={styles.inputs}
+          placeholder="Img4"
+          underlineColorAndroid="transparent"
+          onChangeText={setImg4}
+        />
+    </View>
+    <View style={styles.inputContainer}>
+        <Image
+          style={styles.inputIcon}
+          source={{ uri: 'https://img.icons8.com/?size=512&id=1393&format=png' }}
+        />
+        <TextInput
+          style={styles.inputs}
+          placeholder="Img5"
+          underlineColorAndroid="transparent"
+          onChangeText={setImg5}
+        />
+    </View>
     <TouchableOpacity
         style={[styles.buttonContainer, styles.signupButton]}
         onPress={signUp}>
         <Text style={styles.signUpText}>Sign up</Text>
     </TouchableOpacity>
     </View>
+    </ScrollView>
+
   )
 }
 
@@ -141,13 +220,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#B9D7EA',
+    paddingTop:100,
   },
   inputContainer: {
     borderBottomColor: '#F5FCFF',
     backgroundColor: '#FFFFFF',
     borderRadius: 30,
     borderBottomWidth: 1,
-    width: 250,
+    width: 350,
     height: 45,
     marginBottom: 20,
     flexDirection: 'row',

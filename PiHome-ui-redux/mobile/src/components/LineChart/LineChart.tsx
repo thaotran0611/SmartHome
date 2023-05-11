@@ -32,7 +32,7 @@ const Chart = (props: { data: any, color: any, labelcolor: any, unit: any }) => 
                 // backgroundColor: "#fff",
                 backgroundGradientFrom: "#fff",
                 backgroundGradientTo: "#fff",
-                decimalPlaces: 0, // optional, defaults to 2dp
+                decimalPlaces: 2, // optional, defaults to 2dp
                 color: () => props.color,
                 // color: (opacity = 1) => `rgba(241, 56, 56, ${opacity})`,
                 labelColor: () => props.labelcolor,

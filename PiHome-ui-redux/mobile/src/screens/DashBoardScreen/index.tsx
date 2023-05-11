@@ -88,44 +88,43 @@ const DashBoardScreen = ({ navigation }: any): JSX.Element => {
 
     React.useEffect(() => {
         fetch(BASE_URL+'sensor', {
-            method: 'POST',
+            method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({sensor: 'temp', step: 2})
         })
         .then((resp) => {
             return resp.json();
         })
         .then((jsonData) => {
-            console.log(jsonData)
-            setTemp(jsonData)
+            console.log(jsonData[0], jsonData[1])
+            setTemp(jsonData[0])
+            setLux(jsonData[1])
         })  
         .catch((error) => {
             console.log(error);
         })
     }, [])
 
-    React.useEffect(() => {
-        fetch(BASE_URL+'sensor', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({sensor: 'lux', step: 2})
-        })
-        .then((resp) => {
-            return resp.json();
-        })
-        .then((jsonData) => {
-            console.log(jsonData)
-            setLux(jsonData)
-        })  
-        .catch((error) => {
-            console.log(error);
-        })
-    }, [])
-    console.log('lux-------', lux)
+    // React.useEffect(() => {
+    //     fetch(BASE_URL+'sensor', {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'application/json'
+    //         },
+    //         body: JSON.stringify({sensor: 'lux', step: 2})
+    //     })
+    //     .then((resp) => {
+    //         return resp.json();
+    //     })
+    //     .then((jsonData) => {
+    //         console.log(jsonData)
+    //         setLux(jsonData)
+    //     })  
+    //     .catch((error) => {
+    //         console.log(error);
+    //     })
+    // }, [])
     const color = ['rgba(131, 167, 234, 1)','#F00', '#a00', '#ab8', '#adf', '#addd', '#eabc']
 
     for (let index = 0; index < data.length; index++) {
